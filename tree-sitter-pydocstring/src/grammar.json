@@ -1,0 +1,69 @@
+{
+  "name": "pydocstring",
+  "rules": {
+    "docstring": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_doc_start"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\s*"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "docstring_content"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_indent"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "docstring_content"
+              }
+            ]
+          }
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\s*"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_doc_end"
+        }
+      ]
+    },
+    "docstring_content": {
+      "type": "PATTERN",
+      "value": "[^\\n]*\\n?"
+    }
+  },
+  "extras": [],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "_doc_start"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_doc_end"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_indent"
+    }
+  ],
+  "inline": [],
+  "supertypes": []
+}

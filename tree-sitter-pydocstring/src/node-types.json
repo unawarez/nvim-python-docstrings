@@ -1,0 +1,21 @@
+[
+  {
+    "type": "docstring",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "docstring_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "docstring_content",
+    "named": true
+  }
+]
