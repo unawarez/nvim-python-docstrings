@@ -2,28 +2,28 @@
 Space: empty
 =====================
 ---------------------
-()
+(docstring)
 
 =====================
 Space: just spaces
 =====================
         
 ---------------------
-()
+(docstring)
 
 =====================
 Space: just tabs
 =====================
 			
 ---------------------
-()
+(docstring)
 
 =====================
 Space: one newline
 =====================
 
 ---------------------
-()
+(docstring)
 
 =====================
 Space: one line of just spaces
@@ -31,7 +31,7 @@ Space: one line of just spaces
          
 
 ---------------------
-()
+(docstring)
 
 
 =====================
@@ -43,7 +43,7 @@ Space: just newlines
 
 
 ---------------------
-()
+(docstring)
 
 =====================
 Space: everything
@@ -56,5 +56,5 @@ Space: everything
 
     
 ---------------------
-()
+(docstring)
 

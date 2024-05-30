@@ -44,21 +44,25 @@ module.exports = grammar({
   rules: {
     // TOPLEVEL RULE
     docstring: $ => seq(
-      $._doc_start, /\s*/, $.docstring_content,
-      // subsequent lines: they either have significant indent, or are blank. but
-      // even blank lines need their \n marked as content. relying on scanner
-      // state + lookahead to distinguish between:
-      // * blank lines: indent not counted; everything but the \n eaten
-      // * first non-blank line: no indent count saved, so count and save it
-      // * later non-blank lines: indent count saved, so check it, and eat or error
-      repeat(seq($._indent, $.docstring_content)),
-      /\s*/, $._doc_end
+      $._doc_start,
+      choice(
+        /\s*/,
+        seq(/\s*/, $.docstring_content, /\s*/),
+        seq(
+          /\s*/, $.docstring_content,
+          // relying on scanner state + lookahead to distinguish between:
+          // * blank lines: indent not counted; everything but the \n eaten
+          // * first non-blank line: no indent count saved, so count and save it
+          // * later non-blank lines: indent count saved, so check it, and eat or error
+          repeat(seq($._indent, $.docstring_content)),
+          /\s*/),
+      ),
+      $._doc_end
     ),
 
     // docstring_content matches all chars, including space, from wherever the
     // prev capture stopped through (including) the next newline, or eof if
     // there are no more newlines.
     docstring_content: $ => /[^\n]*\n?/,
-
   },
 });

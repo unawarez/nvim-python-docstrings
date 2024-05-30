@@ -9,32 +9,63 @@
           "name": "_doc_start"
         },
         {
-          "type": "PATTERN",
-          "value": "\\s*"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "docstring_content"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_indent"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "docstring_content"
-              }
-            ]
-          }
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\s*"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "\\s*"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "\\s*"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "docstring_content"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\s*"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "\\s*"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "docstring_content"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_indent"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "docstring_content"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\s*"
+                }
+              ]
+            }
+          ]
         },
         {
           "type": "SYMBOL",
