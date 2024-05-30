@@ -5,10 +5,6 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_doc_start"
-        },
-        {
           "type": "CHOICE",
           "members": [
             {
@@ -66,10 +62,6 @@
               ]
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_doc_end"
         }
       ]
     },

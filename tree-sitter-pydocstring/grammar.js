@@ -44,7 +44,6 @@ module.exports = grammar({
   rules: {
     // TOPLEVEL RULE
     docstring: $ => seq(
-      $._doc_start,
       choice(
         /\s*/,
         seq(/\s*/, $.docstring_content, /\s*/),
@@ -57,7 +56,6 @@ module.exports = grammar({
           repeat(seq($._indent, $.docstring_content)),
           /\s*/),
       ),
-      $._doc_end
     ),
 
     // docstring_content matches all chars, including space, from wherever the

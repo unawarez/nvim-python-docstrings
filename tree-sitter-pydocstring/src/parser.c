@@ -5,14 +5,14 @@
 #endif
 
 #define LANGUAGE_VERSION 14
-#define STATE_COUNT 17
+#define STATE_COUNT 13
 #define LARGE_STATE_COUNT 2
 #define SYMBOL_COUNT 10
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 7
 #define EXTERNAL_TOKEN_COUNT 3
 #define FIELD_COUNT 0
-#define MAX_ALIAS_SEQUENCE_LENGTH 6
+#define MAX_ALIAS_SEQUENCE_LENGTH 4
 #define PRODUCTION_ID_COUNT 1
 
 enum ts_symbol_identifiers {
@@ -118,10 +118,6 @@ static const TSStateId ts_primary_state_ids[STATE_COUNT] = {
   [10] = 10,
   [11] = 11,
   [12] = 12,
-  [13] = 13,
-  [14] = 14,
-  [15] = 15,
-  [16] = 16,
 };
 
 static bool ts_lex(TSLexer *lexer, TSStateId state) {
@@ -136,7 +132,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead == ' ') ADVANCE(3);
       END_STATE();
     case 1:
-      if (lookahead == '\n') ADVANCE(5);
+      if (lookahead == '\n') ADVANCE(6);
       END_STATE();
     case 2:
       ACCEPT_TOKEN(ts_builtin_sym_end);
@@ -152,6 +148,12 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead != '\n') ADVANCE(4);
       END_STATE();
     case 5:
+      ACCEPT_TOKEN(aux_sym_docstring_content_token1);
+      if (eof) ADVANCE(2);
+      if (lookahead != 0 &&
+          lookahead != '\n') ADVANCE(4);
+      END_STATE();
+    case 6:
       ACCEPT_TOKEN(aux_sym_docstring_content_token2);
       END_STATE();
     default:
@@ -161,22 +163,18 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
 
 static const TSLexMode ts_lex_modes[STATE_COUNT] = {
   [0] = {.lex_state = 0, .external_lex_state = 1},
-  [1] = {.lex_state = 0, .external_lex_state = 2},
-  [2] = {.lex_state = 4, .external_lex_state = 3},
-  [3] = {.lex_state = 3, .external_lex_state = 4},
-  [4] = {.lex_state = 3, .external_lex_state = 4},
-  [5] = {.lex_state = 3, .external_lex_state = 4},
+  [1] = {.lex_state = 3},
+  [2] = {.lex_state = 5},
+  [3] = {.lex_state = 3, .external_lex_state = 2},
+  [4] = {.lex_state = 3, .external_lex_state = 2},
+  [5] = {.lex_state = 3, .external_lex_state = 2},
   [6] = {.lex_state = 1, .external_lex_state = 3},
-  [7] = {.lex_state = 3, .external_lex_state = 4},
-  [8] = {.lex_state = 4},
-  [9] = {.lex_state = 3, .external_lex_state = 4},
-  [10] = {.lex_state = 3},
+  [7] = {.lex_state = 3, .external_lex_state = 2},
+  [8] = {.lex_state = 5},
+  [9] = {.lex_state = 3, .external_lex_state = 2},
+  [10] = {.lex_state = 0},
   [11] = {.lex_state = 0},
   [12] = {.lex_state = 0},
-  [13] = {.lex_state = 0, .external_lex_state = 3},
-  [14] = {.lex_state = 0},
-  [15] = {.lex_state = 0, .external_lex_state = 3},
-  [16] = {.lex_state = 0},
 };
 
 static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
@@ -189,17 +187,17 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym__indent] = ACTIONS(1),
   },
   [1] = {
-    [sym_docstring] = STATE(11),
-    [sym__doc_start] = ACTIONS(3),
+    [sym_docstring] = STATE(10),
+    [aux_sym_docstring_token1] = ACTIONS(3),
   },
 };
 
 static const uint16_t ts_small_parse_table[] = {
   [0] = 3,
     ACTIONS(5), 1,
-      aux_sym_docstring_content_token1,
+      ts_builtin_sym_end,
     ACTIONS(7), 1,
-      sym__doc_end,
+      aux_sym_docstring_content_token1,
     STATE(3), 1,
       sym_docstring_content,
   [10] = 3,
@@ -232,7 +230,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym__indent,
       aux_sym_docstring_token1,
   [50] = 2,
-    ACTIONS(5), 1,
+    ACTIONS(7), 1,
       aux_sym_docstring_content_token1,
     STATE(9), 1,
       sym_docstring_content,
@@ -242,24 +240,12 @@ static const uint16_t ts_small_parse_table[] = {
       aux_sym_docstring_token1,
   [62] = 1,
     ACTIONS(24), 1,
-      aux_sym_docstring_token1,
+      ts_builtin_sym_end,
   [66] = 1,
     ACTIONS(26), 1,
       ts_builtin_sym_end,
   [70] = 1,
     ACTIONS(28), 1,
-      ts_builtin_sym_end,
-  [74] = 1,
-    ACTIONS(30), 1,
-      sym__doc_end,
-  [78] = 1,
-    ACTIONS(32), 1,
-      ts_builtin_sym_end,
-  [82] = 1,
-    ACTIONS(34), 1,
-      sym__doc_end,
-  [86] = 1,
-    ACTIONS(36), 1,
       ts_builtin_sym_end,
 };
 
@@ -275,32 +261,24 @@ static const uint32_t ts_small_parse_table_map[] = {
   [SMALL_STATE(10)] = 62,
   [SMALL_STATE(11)] = 66,
   [SMALL_STATE(12)] = 70,
-  [SMALL_STATE(13)] = 74,
-  [SMALL_STATE(14)] = 78,
-  [SMALL_STATE(15)] = 82,
-  [SMALL_STATE(16)] = 86,
 };
 
 static const TSParseActionEntry ts_parse_actions[] = {
   [0] = {.entry = {.count = 0, .reusable = false}},
   [1] = {.entry = {.count = 1, .reusable = false}}, RECOVER(),
-  [3] = {.entry = {.count = 1, .reusable = true}}, SHIFT(10),
-  [5] = {.entry = {.count = 1, .reusable = true}}, SHIFT(6),
-  [7] = {.entry = {.count = 1, .reusable = true}}, SHIFT(12),
-  [9] = {.entry = {.count = 1, .reusable = true}}, SHIFT(13),
+  [3] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2),
+  [5] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_docstring, 1, 0, 0),
+  [7] = {.entry = {.count = 1, .reusable = true}}, SHIFT(6),
+  [9] = {.entry = {.count = 1, .reusable = true}}, SHIFT(11),
   [11] = {.entry = {.count = 1, .reusable = true}}, SHIFT(8),
-  [13] = {.entry = {.count = 1, .reusable = true}}, SHIFT(15),
+  [13] = {.entry = {.count = 1, .reusable = true}}, SHIFT(12),
   [15] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_docstring_repeat1, 2, 0, 0),
   [17] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_docstring_repeat1, 2, 0, 0), SHIFT_REPEAT(8),
   [20] = {.entry = {.count = 1, .reusable = true}}, SHIFT(7),
   [22] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_docstring_content, 2, 0, 0),
-  [24] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2),
-  [26] = {.entry = {.count = 1, .reusable = true}},  ACCEPT_INPUT(),
-  [28] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_docstring, 3, 0, 0),
-  [30] = {.entry = {.count = 1, .reusable = true}}, SHIFT(14),
-  [32] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_docstring, 5, 0, 0),
-  [34] = {.entry = {.count = 1, .reusable = true}}, SHIFT(16),
-  [36] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_docstring, 6, 0, 0),
+  [24] = {.entry = {.count = 1, .reusable = true}},  ACCEPT_INPUT(),
+  [26] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_docstring, 3, 0, 0),
+  [28] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_docstring, 4, 0, 0),
 };
 
 enum ts_external_scanner_symbol_identifiers {
@@ -315,20 +293,17 @@ static const TSSymbol ts_external_scanner_symbol_map[EXTERNAL_TOKEN_COUNT] = {
   [ts_external_token__indent] = sym__indent,
 };
 
-static const bool ts_external_scanner_states[5][EXTERNAL_TOKEN_COUNT] = {
+static const bool ts_external_scanner_states[4][EXTERNAL_TOKEN_COUNT] = {
   [1] = {
     [ts_external_token__doc_start] = true,
     [ts_external_token__doc_end] = true,
     [ts_external_token__indent] = true,
   },
   [2] = {
-    [ts_external_token__doc_start] = true,
+    [ts_external_token__indent] = true,
   },
   [3] = {
     [ts_external_token__doc_end] = true,
-  },
-  [4] = {
-    [ts_external_token__indent] = true,
   },
 };
 

@@ -65,7 +65,7 @@ bool tree_sitter_pydocstring_external_scanner_scan(void *payload, TSLexer *lex,
       return false;
     }
 
-  } else if (lex->eof(lex) /*&& valid_symbols[DOC_END]*/) {
+  } else if (lex->eof(lex) && valid_symbols[DOC_END]) {
     lex->result_symbol = DOC_END;
     return true;
 
