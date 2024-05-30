@@ -63,6 +63,7 @@ module.exports = grammar({
     // docstring_content matches all chars, including space, from wherever the
     // prev capture stopped through (including) the next newline, or eof if
     // there are no more newlines.
-    docstring_content: $ => /[^\n]*\n?/,
+    // forcing a check for eof here because '\n?' might be causing infinite loops.
+    docstring_content: $ => seq(/[^\n]*/, choice(/\n/, $._doc_end)),
   },
 });

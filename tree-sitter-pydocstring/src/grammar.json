@@ -74,8 +74,26 @@
       ]
     },
     "docstring_content": {
-      "type": "PATTERN",
-      "value": "[^\\n]*\\n?"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[^\\n]*"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "\\n"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_doc_end"
+            }
+          ]
+        }
+      ]
     }
   },
   "extras": [],

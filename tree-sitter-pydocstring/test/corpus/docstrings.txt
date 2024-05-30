@@ -1,0 +1,20 @@
+===
+Simple string
+===
+A foo that bars.
+---
+(docstring
+  (docstring_content))
+
+===
+One paragraph with no indent
+===
+A foo that bars.
+Every day it does.
+Sometimes also.
+---
+(docstring
+  (docstring_content)
+  (docstring_content)
+  (docstring_content))
+
