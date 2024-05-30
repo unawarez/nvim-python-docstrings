@@ -35,33 +35,20 @@ module.exports = grammar({
   // extras defaults to whitespace unless overridden!
   extras: $ => [],
 
-  externals: $ => [
-    $._doc_start,
-    $._doc_end,
-    $._indent,
-  ],
+  // externals: $ => [
+  //   $._eof,
+  // ],
 
   rules: {
-    // TOPLEVEL RULE
-    docstring: $ => seq(
-      choice(
-        /\s*/,
-        seq(/\s*/, $.docstring_content, /\s*/),
-        seq(
-          /\s*/, $.docstring_content,
-          // relying on scanner state + lookahead to distinguish between:
-          // * blank lines: indent not counted; everything but the \n eaten
-          // * first non-blank line: no indent count saved, so count and save it
-          // * later non-blank lines: indent count saved, so check it, and eat or error
-          repeat(seq($._indent, $.docstring_content)),
-          /\s*/),
-      ),
+    // finally got an error message mentioning the "start rule",
+    // so there is a toplevel rule and it's the first one.
+    docstring: $ => choice(
+      optional($._headfootspace),
+      // tree-sitter does hate zero-width tokens, but it seems to be
+      // specifically when they're at the end.
+      seq($._headfootspace, $.docstring_content, optional($._headfootspace)),
     ),
-
-    // docstring_content matches all chars, including space, from wherever the
-    // prev capture stopped through (including) the next newline, or eof if
-    // there are no more newlines.
-    // forcing a check for eof here because '\n?' might be causing infinite loops.
-    docstring_content: $ => seq(/[^\n]*/, choice(/\n/, $._doc_end)),
+    docstring_content: $ => /[^\n]*\n?/,
+    _headfootspace: $ => /\s*/,
   },
 });

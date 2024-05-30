@@ -4,7 +4,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -16,7 +16,6 @@
   },
   {
     "type": "docstring_content",
-    "named": true,
-    "fields": {}
+    "named": true
   }
 ]

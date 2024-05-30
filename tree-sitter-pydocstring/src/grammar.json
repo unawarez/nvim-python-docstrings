@@ -2,62 +2,40 @@
   "name": "pydocstring",
   "rules": {
     "docstring": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "\\s*"
+              "type": "SYMBOL",
+              "name": "_headfootspace"
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "PATTERN",
-                  "value": "\\s*"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "docstring_content"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "\\s*"
-                }
-              ]
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_headfootspace"
             },
             {
-              "type": "SEQ",
+              "type": "SYMBOL",
+              "name": "docstring_content"
+            },
+            {
+              "type": "CHOICE",
               "members": [
                 {
-                  "type": "PATTERN",
-                  "value": "\\s*"
-                },
-                {
                   "type": "SYMBOL",
-                  "name": "docstring_content"
+                  "name": "_headfootspace"
                 },
                 {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_indent"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "docstring_content"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "\\s*"
+                  "type": "BLANK"
                 }
               ]
             }
@@ -66,45 +44,18 @@
       ]
     },
     "docstring_content": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "[^\\n]*"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "\\n"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_doc_end"
-            }
-          ]
-        }
-      ]
+      "type": "PATTERN",
+      "value": "[^\\n]*\\n?"
+    },
+    "_headfootspace": {
+      "type": "PATTERN",
+      "value": "\\s*"
     }
   },
   "extras": [],
   "conflicts": [],
   "precedences": [],
-  "externals": [
-    {
-      "type": "SYMBOL",
-      "name": "_doc_start"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_doc_end"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_indent"
-    }
-  ],
+  "externals": [],
   "inline": [],
   "supertypes": []
 }
