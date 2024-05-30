@@ -1,20 +1,78 @@
-===
-Simple string
-===
+====================
+Nothing
+====================
+--------------------
+(docstring)
+
+
+====================
+Tab and spaces
+====================
+	   
+--------------------
+(docstring)
+
+
+====================
+Newlines
+====================
+
+
+
+--------------------
+(docstring)
+
+
+====================
+Headline
+====================
 A foo that bars.
----
+--------------------
 (docstring
   (docstring_content))
 
-===
-One paragraph with no indent
-===
+
+====================
+Headline with trailing newlines
+====================
 A foo that bars.
+
+
+--------------------
+(docstring
+  (docstring_content))
+
+
+====================
+Headline with trailing whitespace lines
+====================
+A foo that bars.
+    
+    
+--------------------
+(docstring
+  (docstring_content))
+
+
+====================
+Headline with indent
+====================
+	A foo that bars.
+--------------------
+(docstring
+  (docstring_content))
+
+
+====================
+Headline and paragraph
+====================
+A foo that bars.
+
 Every day it does.
 Sometimes also.
----
+--------------------
 (docstring
   (docstring_content)
   (docstring_content)
+  (docstring_content)
   (docstring_content))
-

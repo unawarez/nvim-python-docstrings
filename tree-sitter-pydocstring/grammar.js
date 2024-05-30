@@ -46,7 +46,7 @@ module.exports = grammar({
       optional($._headfootspace),
       // tree-sitter does hate zero-width tokens, but it seems to be
       // specifically when they're at the end.
-      seq($._headfootspace, $.docstring_content, optional($._headfootspace)),
+      seq($._headfootspace, repeat($.docstring_content), optional($._headfootspace)),
     ),
     docstring_content: $ => /[^\n]*\n?/,
     _headfootspace: $ => /\s*/,

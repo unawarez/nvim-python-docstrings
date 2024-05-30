@@ -24,8 +24,11 @@
               "name": "_headfootspace"
             },
             {
-              "type": "SYMBOL",
-              "name": "docstring_content"
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "docstring_content"
+              }
             },
             {
               "type": "CHOICE",
