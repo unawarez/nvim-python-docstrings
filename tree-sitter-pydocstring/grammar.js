@@ -35,20 +35,25 @@ module.exports = grammar({
   // extras defaults to whitespace unless overridden!
   extras: $ => [],
 
-  // externals: $ => [
-  //   $._eof,
-  // ],
+  // this whole thing could be implemented as external scanners, but i assume
+  // not using regexes will lose tons of performance during editing.
+  externals: $ => [
+    $._indent,
+    // error_state -> return false *has* helped, but not always.
+    $.error_state,
+  ],
 
   rules: {
     // finally got an error message mentioning the "start rule",
     // so there is a toplevel rule and it's the first one.
     docstring: $ => choice(
-      optional($._headfootspace),
-      // tree-sitter does hate zero-width tokens, but it seems to be
-      // specifically when they're at the end.
-      seq($._headfootspace, repeat($.docstring_content), optional($._headfootspace)),
+      optional($._headfootspace), // can fail without optional
+      seq($._headfootspace, $.docstring_content, optional($._headfootspace)),
+      seq($._headfootspace, $.docstring_content,
+        repeat1(seq($._indent, $.docstring_content)),
+        optional($._headfootspace)),
     ),
-    docstring_content: $ => /[^\n]*\n?/,
-    _headfootspace: $ => /\s*/,
+    docstring_content: $ => token(prec(0, /[^\n]*\n?/)),
+    _headfootspace: $ => token(prec(0, /\s*/)),
   },
 });
