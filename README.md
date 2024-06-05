@@ -1,8 +1,30 @@
 # nvim-python-docstrings
 
-A Tree-sitter-based plugin that "natively" styles the markup in Python
-docstrings. Live but broken proof-of-concept right now.
+Make Neovim show highlighted markup inside Python docstrings.
 
-People across the internet have set up language injections to do this, but the problem is the captured text will always include any leading indentation in the docstring, and leading indentation is significant/document-breaking in both ReST and Markdown. This plugin fixes that by creating a new `pydocstring` TS language that replicates the indent-skipping behavior of `inspect.cleandoc` as closely as possible. A `python` TS query captures docstrings and injects the `pydocstring` language into them, and then a `pydocstring` TS query captures all the legitimate, non-whitespace docstring text and injects the `markdown` language into them (sorry; should be trivial to make the final language a configurable var though).
+This is implemented via a few steps:
+1. Add Tree-sitter language injections to capture string literals that are really docstrings.
+2. The injected language is a new intermediate `pydocstring` language that hides any
+   leading indent in the docstring. This is the key step that prevents docstring
+   indentation from ruining the markup, turning it all into code blocks.
+3. A second round of language injections turns the non-insignificant-whitespace
+   portions of the `pydocstring` into Markdown (sorry; it should be un-hardcoded
+   and default to ReST, but I happen to like `pdoc`).
 
-Somehow there is memory corruption happening inside nvim. Walking through a document with `:InspectTree` on, you will see as you go up/down the InspectTree list that it bounces all over the document. And once in a great while nvim will segfault while doing this. I have not seen problems running tree-sitter tools on the pydocstring grammar. So I have no clue at this point.
+
+# Dumb mysteries
+
+## Memory corruption
+
+If you open `:InspectTree` in a Python file with multiple docstrings, and then
+scroll up/down through the node list, you will see the real document cursor
+jumping and looping all over the document. This is obviously not good. Twice
+ever, I have seen nvim segfault. I have never seen any suspect behavior while
+running Tree-sitter tools on this grammar, *and* the corruption and segfaults
+were happening before the grammar had a `scanner.c`, so at this point I assume
+it's some horrible undebuggable thing on the nvim side of things.
+
+## Occasionally does nothing, with no error output
+
+Somewhere between 10%-50% of the time, the same file in the same working dir
+will not load the injections. Possibly due to memory issues above. I hope.
